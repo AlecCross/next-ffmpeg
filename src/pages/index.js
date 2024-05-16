@@ -37,12 +37,16 @@ export default function Index() {
     try {
       await ffmpeg.run(
         '-i', 'test.mp4', 
-        '-c:v', 'libvpx-vp9', 
-        '-b:v', '200k',
-        '-pix_fmt', 'yuv420p',
+        '-r', '30', // Кадрова частота 30 fps
+        '-t', '2.99', // Тривалість відео обмежена до 2.99 секунд
+        '-an', // Видалення аудіодоріжки
+        '-c:v', 'libvpx-vp9',
+        '-pix_fmt', 'yuva420p', // Використання формату пікселів yuva420p для підтримки прозорості
+        '-vf', 'scale=512:512:force_original_aspect_ratio=decrease', // Масштабування з дотриманням пропорцій
+        '-b:v', '400K', // Бітрейт відео 400 кілобіт за секунду
         'output.webm'
       );
-      
+      //ffmpeg -y -i animated_sticker.mov -r 30 -t 2.99 -an -c:v libvpx-vp9 -pix_fmt yuva420p -vf 'scale=512:512:force_original_aspect_ratio=decrease' -b:v 400K output.webm
       // Read the result
       const data = ffmpeg.FS('readFile', 'output.webm');
   
