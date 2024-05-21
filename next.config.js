@@ -2,6 +2,7 @@ const withPWA = require('next-pwa')({
   dest: 'public',
   register: true,
   skipWaiting: true,
+  disableDevLogs: true
   // Додайте інші налаштування PWA якщо потрібно
 });
 
