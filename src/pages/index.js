@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styles from '../index.module.css';
 import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
-import Head from 'next/head';
 const ffmpeg = createFFmpeg({ log: true });
 
 export default function Index() {
@@ -88,10 +87,6 @@ export default function Index() {
 
   return ready ? (
     <>
-      <Head>
-        <title>Sticker converter</title>
-        <meta property="og:title" content="My page title" key="title" />
-      </Head>
       <div className={styles.App}>
         <div className={styles["status-message"]}>
           {progress === 0 && (
