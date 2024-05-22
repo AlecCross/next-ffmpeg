@@ -2,6 +2,7 @@
     "short_name": "Webp Converter",
     "name": "Converter video to webp vp9 512x512 for Telegram video stickers",
     "description": "A simple PWA built with React and Next.js",
+    "version": "0.1",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#ffffff",
