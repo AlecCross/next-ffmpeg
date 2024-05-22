@@ -108,14 +108,17 @@ export default function Index() {
             </div>
           )}
           {progress === 1 && (
-            <div>
+            <div className={styles.statusWrapper}>
               <div>Converting...</div>
-              <div>Progress: {Math.round(progressPercent.toFixed(2))}%</div>
               <div className={styles.progressBar}>
-                <div
-                  className={styles.progress}
-                  style={{ width: `${progressPercent.toFixed(2)}%` }}
-                />
+                <meter
+                  className={styles.meter}
+                  value={progressPercent}
+                  min="0"
+                  max="100"
+                >
+                  {Math.round(progressPercent)}%
+                </meter>
               </div>
             </div>
           )}
