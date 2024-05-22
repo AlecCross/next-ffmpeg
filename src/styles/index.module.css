@@ -1,19 +1,34 @@
 .App {
-    display: flex;
-    flex-direction: column;
     align-items: center;
-    /* justify-content: center; */
     height: 100vh;
     text-align: center;
+  }
+
+  .title{
+    color: white;
+    font-weight: bolder;
+    font-style: italic;
+    font-size: larger;
+    background-color: rgb(0, 166, 255);
+    border-radius: 5%;
+    margin: 20px;
+  }
+
+  .description{
+    margin: 20px;
+    padding-bottom: 20px;
   }
   
   .status-message {
     margin-bottom: 20px;
   }
+
+  .containers-wrapper{
+    display: flex;
+    justify-content: space-around;
+  }
   
   .video-container {
-    display: flex;
-    flex-direction: column;
     align-items: center;
     margin-bottom: 20px;
   }
@@ -44,4 +59,13 @@
     width: 0;
     transition: width 0.4s ease;
   }
+
+  @media (max-width: 720px) {
+    .containers-wrapper{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+  }                             
   

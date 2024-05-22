@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import '../styles/global.css';
 
 function MyApp({ Component, pageProps }) {
   const [deferredPrompt, setDeferredPrompt] = useState(null);

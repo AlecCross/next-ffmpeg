@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import styles from '../index.module.css';
+import styles from '../styles/index.module.css';
 import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
 
 const ffmpeg = createFFmpeg({ log: true });
@@ -12,14 +12,19 @@ export default function Index() {
   const [progressPercent, setProgressPercent] = useState(0);
   const videoUrlRef = useRef(null);
 
-  const load = async () => {
-    await ffmpeg.load();
-    setReady(true);
-  }
+  const loadFFmpeg = async () => {
+    try {
+      await ffmpeg.load();
+      setReady(true);
+    } catch (error) {
+      console.error('Error loading ffmpeg:', error);
+    }
+  };
 
   useEffect(() => {
-    load();
+    loadFFmpeg();
   }, []);
+
 
   useEffect(() => {
     const handleConsoleLog = ({ type, message }) => {
@@ -80,6 +85,8 @@ export default function Index() {
       const url = URL.createObjectURL(new Blob([data.buffer], { type: 'video/webm' }));
       setWebm(url);
       setProgress(2);
+      console.debug("Notification ")
+
       console.debug("Not ", showNotification())
       showNotification();
     } catch (error) {
@@ -94,7 +101,9 @@ export default function Index() {
         <div className={styles["status-message"]}>
           {progress === 0 && (
             <div>
-              <div>Create video sticker for Telegram</div>
+              <div className={styles.title}>
+                Create video sticker for Telegram
+              </div>
               <div>Please load video 1:1 ratio and start converting</div>
             </div>
           )}
@@ -103,8 +112,8 @@ export default function Index() {
               <div>Converting...</div>
               <div>Progress: {Math.round(progressPercent.toFixed(2))}%</div>
               <div className={styles.progressBar}>
-                <div 
-                  className={styles.progress} 
+                <div
+                  className={styles.progress}
                   style={{ width: `${progressPercent.toFixed(2)}%` }}
                 />
               </div>
@@ -112,30 +121,38 @@ export default function Index() {
           )}
           {progress === 2 && <div>Finish</div>}
         </div>
-        <div className={styles["video-container"]}>
-          {video ? (
-            <video
-              controls
-              width="250"
-              src={videoUrlRef.current}
-            ></video>
-          ) : (
-            <div className={styles["video-placeholder"]}></div>
-          )}
-          <input
-            type="file"
-            onChange={handleVideoUpload}
-          />
+        <div className={styles["containers-wrapper"]}>
+          <div>
+            <div className={styles["video-container"]}>
+              {video ? (
+                <video controls width="250" src={videoUrlRef.current}></video>
+              ) : (
+                <div className={styles["video-placeholder"]}></div>
+              )}
+            </div>
+            <input type="file" onChange={handleVideoUpload} />
+          </div>
+          <div>
+            <div className={styles["video-container"]}>
+              {webm ? (
+                <video src={webm} width="250" controls />
+              ) : (
+                <div className={styles["video-placeholder"]}></div>
+              )}
+            </div>
+            <button onClick={convertToWebm}>Convert to webm</button>
+          </div>
         </div>
-        <div className={styles["result-container"]}>
+        <div>
           {progress === 2 && <h3>Result</h3>}
-          <div>You get 512x512 video in .webm VP9 (if original video has 1:1 ratio), without audio, duration 2.99sec</div>
-          <button onClick={convertToWebm}>Convert to webm</button>
-          {webm && <video src={webm} width="250" controls />}
+          <div className={styles.description}>
+            You get 512x512 video in .webm VP9 (if original video has 1:1
+            ratio), without audio, duration 2.99sec
+          </div>
         </div>
       </div>
     </>
   ) : (
-    <p>Loading...</p>
+    <p className={styles.App}>Loading...</p>
   );
 }
