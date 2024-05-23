@@ -56,20 +56,21 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 100%; /* Забезпечує ширину контейнера */
-    text-align: center; /* Центрує текст */
+    width: 100%;
+    text-align: center;
+  }
+  
+  .progressBar, .placeholder {
+    width: 100%;
+    max-width: 300px;
+    height: 20px;
+    margin-top: 10px;
   }
   
   .progressBar {
-    width: 100%;
-    max-width: 300px; /* Максимальна ширина прогрес-бара */
     background-color: #e0e0e0;
     border-radius: 5px;
     overflow: hidden;
-    margin-top: 10px;
-    height: 20px;
-    position: relative;
-    align-items: center;
   }
   
   .meter {
@@ -109,8 +110,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      width: 100%; /* Забезпечує ширину контейнера */
-      text-align: center; /* Центрує текст */
+      width: 100%;
+      text-align: center;
     }
 
     .progressBar {

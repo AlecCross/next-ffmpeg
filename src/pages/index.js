@@ -99,12 +99,11 @@ export default function Index() {
     <>
       <div className={styles.App}>
         <div className={styles["status-message"]}>
+          <div className={styles.title}>Create video sticker for Telegram</div>
           {progress === 0 && (
             <div>
-              <div className={styles.title}>
-                Create video sticker for Telegram
-              </div>
               <div>Please load video 1:1 ratio and start converting</div>
+              <div className={styles.placeholder}></div>
             </div>
           )}
           {progress === 1 && (
@@ -122,7 +121,12 @@ export default function Index() {
               </div>
             </div>
           )}
-          {progress === 2 && <div>Finish</div>}
+          {progress === 2 && (
+            <div>
+              <div>Finish</div>
+              <div className={styles.placeholder}></div>
+            </div>
+          )}
         </div>
         <div className={styles["containers-wrapper"]}>
           <div>
