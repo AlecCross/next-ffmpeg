@@ -98,6 +98,11 @@
     border-radius: 5px;
     transition: width 0.4s ease;
   }
+
+  .link{
+    text-decoration: none;
+    color:rgb(0, 5, 71);
+  }
   
   @media (max-width: 720px) {
     .containers-wrapper {

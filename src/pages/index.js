@@ -157,6 +157,34 @@ export default function Index() {
             ratio), without audio, duration 2.99sec
           </div>
         </div>
+        <div className={styles.attribution}>
+          This application utilizes FFmpeg for video processing. FFmpeg is an
+          open-source project available under the LGPL license.
+          <div>
+            <div>
+            <span>LGPL license:</span>
+              <a
+                className={styles.link}
+                href="https://ffmpeg.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Learn more about FFmpeg
+              </a>
+            </div>
+            <div>
+            <span>Code source:</span> 
+              <a
+                className={styles.link}
+                href="https://github.com/ffmpegwasm/ffmpeg.wasm/releases/tag/v0.12.10"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                View FFmpeg version used (v0.12.10)
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   ) : (
