@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-// Якщо завантажувач вже завантажено, просто зупиніть.
+// If the loader is already loaded, just stop.
 if (!self.define) {
   let registry = {};
 
@@ -22,18 +22,20 @@ if (!self.define) {
   const singleRequire = (uri, parentUri) => {
     uri = new URL(uri + ".js", parentUri).href;
     return registry[uri] || (
-      new Promise(resolve => {
-        if ("document" in self) {
-          const script = document.createElement("script");
-          script.src = uri;
-          script.onload = resolve;
-          document.head.appendChild(script);
-        } else {
-          nextDefineUri = uri;
-          importScripts(uri);
-          resolve();
-        }
-      })
+      
+        new Promise(resolve => {
+          if ("document" in self) {
+            const script = document.createElement("script");
+            script.src = uri;
+            script.onload = resolve;
+            document.head.appendChild(script);
+          } else {
+            nextDefineUri = uri;
+            importScripts(uri);
+            resolve();
+          }
+        })
+      
       .then(() => {
         let promise = registry[uri];
         if (!promise) {
@@ -47,6 +49,7 @@ if (!self.define) {
   self.define = (depsNames, factory) => {
     const uri = nextDefineUri || ("document" in self ? document.currentScript.src : "") || location.href;
     if (registry[uri]) {
+      // Module is already loading or loaded.
       return;
     }
     let exports = {};
@@ -89,7 +92,7 @@ define(['./workbox-e43f5367'], (function (workbox) { 'use strict';
       }
     }]
   }), 'GET');
-  workbox.registerRoute(/.*/i, new workbox.CacheFirst({
+  workbox.registerRoute(/.*/i, new workbox.NetworkOnly({
     "cacheName": "dev",
     plugins: []
   }), 'GET');
@@ -97,5 +100,3 @@ define(['./workbox-e43f5367'], (function (workbox) { 'use strict';
 
 }));
 //# sourceMappingURL=sw.js.map
-
-//workbox.registerRoute(/.*/i, new workbox.NetworkOnly({

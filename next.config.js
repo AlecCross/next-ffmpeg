@@ -1,9 +1,42 @@
-const withPWA = require('next-pwa')({
-  dest: 'public',
+const withPWA = require("next-pwa")({
+  dest: "public",
   register: true,
   skipWaiting: true,
-  disableDevLogs: true
-  // Додайте інші налаштування PWA якщо потрібно
+  disableDevLogs: true,
+  runtimeCaching: [
+    {
+      urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com\/.*/i,
+      handler: "CacheFirst",
+      options: {
+        cacheName: "google-fonts",
+        expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 * 365 },
+      },
+    },
+    {
+      urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp|ico)$/i,
+      handler: "CacheFirst",
+      options: {
+        cacheName: "images",
+        expiration: { maxEntries: 50, maxAgeSeconds: 60 * 60 * 24 * 30 },
+      },
+    },
+    {
+      urlPattern: /\.(?:js|css)$/i,
+      handler: "StaleWhileRevalidate",
+      options: {
+        cacheName: "static-resources",
+        expiration: { maxEntries: 50, maxAgeSeconds: 60 * 60 * 24 * 30 },
+      },
+    },
+    {
+      urlPattern: "/",
+      handler: "NetworkFirst",
+      options: {
+        cacheName: "start-url",
+        expiration: { maxEntries: 1, maxAgeSeconds: 60 * 60 * 24 },
+      },
+    },
+  ],
 });
 
 /** @type {import('next').NextConfig} */
@@ -11,16 +44,14 @@ const nextConfig = {
   async headers() {
     return [
       {
-        // Застосування цих заголовків до всіх маршрутів у вашому додатку.
-        source: '/(.*)',
+        source: "/(.*)",
         headers: [
-          { key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
-          { key: 'Cross-Origin-Embedder-Policy', value: 'require-corp' },
+          { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
+          { key: "Cross-Origin-Embedder-Policy", value: "require-corp" },
         ],
       },
     ];
   },
-  // Тут можна додати інші налаштування для Next.js, якщо потрібно
 };
 
 module.exports = withPWA(nextConfig);
