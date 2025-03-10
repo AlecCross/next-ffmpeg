@@ -1,22 +1,17 @@
 // src/pages/index.js
-
-import React, { useState, useEffect, useRef } from 'react';
-import { useFFmpeg } from '../hooks/useFFmpeg';
+import React, { useEffect } from 'react';
+// import { useFFmpeg } from '../hooks/useFFmpeg';
+import useVideo from '../hooks/useVideo';
+import useConversion from '../hooks/useConversion';
+import VideoUploader from '../components/VideoUploader';
+import VideoPreview from '../components/VideoPreview';
+import ConversionStatus from '../components/ConversionStatus';
+import ConvertButton from '../components/ConvertButton';
 import styles from '../styles/index.module.css';
 
 export default function Index() {
-  const [video, setVideo] = useState(null);
-  const videoUrlRef = useRef(null);
-
-  const { ready, progress, progressPercent, webm, convertToWebm } = useFFmpeg();
-
-  const handleVideoUpload = (event) => {
-    const file = event.target.files?.item(0);
-    if (file) {
-      setVideo(file);
-      videoUrlRef.current = URL.createObjectURL(file);
-    }
-  };
+  const { video, videoUrl, handleVideoUpload } = useVideo();
+  const { ready, progress, progressPercent, webm, isConverting, startConversion } = useConversion(video);
 
   const showNotification = () => {
     if (Notification.permission === 'granted') {
@@ -27,7 +22,6 @@ export default function Index() {
     }
   };
 
-  // Викликається, коли перетворення завершено
   useEffect(() => {
     if (progress === 2) {
       showNotification();
@@ -38,75 +32,30 @@ export default function Index() {
     <div className={styles.App}>
       <div className={styles['status-message']}>
         <div className={styles.title}>Create video sticker for Telegram</div>
-        {progress === 0 && (
-          <div>
-            <div>Please load video 1:1 ratio and start converting</div>
-            <div className={styles.placeholder}></div>
-          </div>
-        )}
-        {progress === 1 && (
-          <div className={styles.statusWrapper}>
-            <div>Converting...</div>
-            <div className={styles.progressBar}>
-              <meter
-                className={styles.meter}
-                value={progressPercent}
-                min="0"
-                max="100"
-              >
-                {Math.round(progressPercent)}%
-              </meter>
-            </div>
-          </div>
-        )}
-        {progress === 2 && (
-          <div>
-            <div>Finish</div>
-            <div className={styles.placeholder}></div>
-          </div>
-        )}
+        <ConversionStatus progress={progress} progressPercent={progressPercent} />
       </div>
       <div className={styles['containers-wrapper']}>
         <div>
-          <div className={styles['video-container']}>
-            {video ? (
-              <video controls width="250" src={videoUrlRef.current}></video>
-            ) : (
-              <div className={styles['video-placeholder']}></div>
-            )}
-          </div>
-          <input type="file" onChange={handleVideoUpload} />
+          <VideoPreview videoUrl={videoUrl} />
+          <VideoUploader onFileUpload={handleVideoUpload} />
         </div>
         <div>
-          <div className={styles['video-container']}>
-            {webm ? (
-              <video src={webm} width="250" controls />
-            ) : (
-              <div className={styles['video-placeholder']}></div>
-            )}
-          </div>
-          <button onClick={() => convertToWebm(video)}>Convert to webm</button>
+          <VideoPreview videoUrl={webm} />
+          <ConvertButton onConvert={startConversion} />
         </div>
       </div>
       <div>
         {progress === 2 && <h3>Result</h3>}
         <div className={styles.description}>
-          You get 512x512 video in .webm VP9 (if original video has 1:1
-          ratio), without audio, duration 2.99sec
+          You get 512x512 video in .webm VP9 (if original video has 1:1 ratio), without audio, duration 2.99sec
         </div>
       </div>
       <div className={styles.attribution}>
-        This application utilizes FFmpeg for video processing. FFmpeg is an
-        open-source project available under the LGPL license.
+        This application utilizes FFmpeg for video processing. FFmpeg is an open-source project available under the LGPL license.
         <div>
           <div>
             <span>LGPL license:</span>
-            <a
-              className={styles.link}
-              href="https://ffmpeg.org/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a className={styles.link} href="https://ffmpeg.org/" target="_blank" rel="noopener noreferrer">
               Learn more about FFmpeg
             </a>
           </div>
