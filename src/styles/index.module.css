@@ -31,6 +31,9 @@
   }
   
   .video-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
     align-items: center;
     margin-bottom: 20px;
   }
@@ -141,7 +144,6 @@
   }
   
   .videoUploadArea {
-    border: 2px dashed #ccc;
     padding: 20px;
     text-align: center;
     cursor: pointer;
@@ -154,7 +156,7 @@
   }
   
   .fileInput {
-    display: none;
+    /* display: none; */
   }
   
   
