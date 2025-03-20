@@ -1,3 +1,4 @@
+//src/pages/imdex.js
 import React, { useEffect } from 'react';
 import useVideo from '../hooks/useVideo';
 import useConversion from '../hooks/useConversion';
@@ -12,7 +13,7 @@ export default function Index() {
   const { ready, progress, progressPercent, webm, isConverting, startConversion } = useConversion(video);
 
   useEffect(() => {
-    if (progress === 2 && Notification.permission === 'granted') {
+    if (typeof window !== 'undefined' && progress === 2 === 'granted') {
       new Notification('Conversion complete', {
         body: 'Your video has been successfully converted to webm.',
         icon: '/icon-512x512.png',
