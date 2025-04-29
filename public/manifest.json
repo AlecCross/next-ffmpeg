@@ -28,6 +28,22 @@
         "sizes": "512x512",
         "type": "image/png"
       }
+    ],
+    "screenshots":[
+      {
+        "src": "/screenshot-phone-1.webp",
+        "sizes": "1440x2953",
+        "type": "image/webp",
+        "form_factor": "narrow",
+        "label": "The About page shown on mobile."
+      },
+      {
+        "src": "/screenshot-desktop-1.webp",
+        "sizes": "1306x735",
+        "type": "image/webp",
+        "form_factor": "wide",
+        "label": "The About page shown on desktop."
+      }
     ]
   }
   
